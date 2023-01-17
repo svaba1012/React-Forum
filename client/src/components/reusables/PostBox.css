@@ -1,0 +1,18 @@
+.post-box {
+  display: flex;
+}
+
+.post-box-info {
+  margin-right: 10px;
+  font-size: xx-large;
+}
+
+.post-box-info div {
+  margin-bottom: 20px;
+  width: inherit;
+  text-align: center;
+}
+
+.post-box-info div i {
+  font-size: xx-large;
+}

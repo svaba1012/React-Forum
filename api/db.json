@@ -1,0 +1,23 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "title": "How to add new variable",
+      "description": "How to add new variable to js",
+      "voteUps": [],
+      "voteDowns": []
+    }
+  ],
+  "answers": [
+    {
+      "id": 1,
+      "title": "Focus",
+      "description": "Simplly",
+      "voteUps": [],
+      "voteDowns": [],
+      "questionId": 1
+    }
+  ],
+
+  "users": [{ "id": 1, "user": {} }]
+}
