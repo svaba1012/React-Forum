@@ -1,16 +1,18 @@
 import React from "react";
+import { voteUp, voteDown } from "../../actions";
+import { connect } from "react-redux";
 import "./PostBox.css";
 
-function PostBox({ postData }) {
+function PostBox({ postData, voteUp, id, voteDown }) {
   return (
     <div className="ui segment post-box">
       <div className="post-box-info">
-        <div>
-          <i class="fa-solid fa-caret-up"></i>
+        <div onClick={() => voteUp(id)}>
+          <i className="fa-solid fa-caret-up"></i>
         </div>
         <div>{postData.voteUps.length - postData.voteDowns.length}</div>
-        <div>
-          <i class="fa-solid fa-caret-down"></i>
+        <div onClick={() => voteDown(id)}>
+          <i className="fa-solid fa-caret-down"></i>
         </div>
       </div>
       <div className="post-box-content">
@@ -19,11 +21,11 @@ function PostBox({ postData }) {
           <div className="ui feed">
             <div className="event">
               <div className="label">
-                <img src="/images/avatar/small/jenny.jpg" alt="User pic" />
+                <img src={postData.user.imageUrl} alt="User pic" />
               </div>
               <div className="content">
                 <div className="summary">
-                  Posted by <a>Jenny Hess</a>
+                  Posted by <a>{postData.user.name}</a>
                   <div className="date">on {new Date().getDate()}</div>
                 </div>
               </div>
@@ -35,4 +37,4 @@ function PostBox({ postData }) {
   );
 }
 
-export default PostBox;
+export default connect(null, { voteUp, voteDown })(PostBox);

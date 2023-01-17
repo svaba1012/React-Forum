@@ -11,18 +11,17 @@ function QuestionPage(props) {
     props.getAnswers(id);
   }, []);
 
-  console.log(props.question);
   if (!props.question.title) {
     return;
   }
   return (
     <div>
       <h1>{props.question.title} </h1>
-      <PostBox postData={props.question} />{" "}
+      <PostBox postData={props.question} id={-1} />
       <div className="ui segment">
         <h3>{props.answers.length} Answers</h3>
-        {props.answers.map((answer) => {
-          return <PostBox postData={answer} />;
+        {props.answers.map((answer, id) => {
+          return <PostBox postData={answer} key={id} id={id} />;
         })}
       </div>
     </div>

@@ -1,9 +1,15 @@
-import { GET_QUESTION } from "../actions/types";
+import { GET_QUESTION, VOTE_DOWN, VOTE_UP } from "../actions/types";
 
 export const questionReducer = (question = null, action) => {
   switch (action.type) {
     case GET_QUESTION:
       return { ...action.payload };
+    case VOTE_DOWN:
+    case VOTE_UP:
+      if (action.payload.postType >= 0) {
+        return { ...question };
+      }
+      return { ...question, ...action.payload.data };
     default:
       return { ...question };
   }
