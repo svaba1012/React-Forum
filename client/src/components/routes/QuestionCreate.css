@@ -1,0 +1,32 @@
+.text-area {
+  resize: none;
+}
+
+.option-bar {
+  width: inherit;
+
+  display: flex;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: 1px solid black;
+}
+
+.option-bar div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.option-bar div:hover {
+  background-color: rgb(177, 177, 177);
+}
+
+a {
+  text-decoration: underline;
+}

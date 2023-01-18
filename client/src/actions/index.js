@@ -36,9 +36,9 @@ export const getAnswers = (questionId) => async (dispatch) => {
 
 export const signIn = (obj) => async (dispatch) => {
   console.log(obj);
-  let res = await server.post(`/users/${obj.googleId}`);
-  if (!res.profileObj) {
-    let res = await server.post(`/users`, {
+  let res = await server.get(`/users/${obj.googleId}`);
+  if (!res.data.googleId) {
+    await server.post(`/users`, {
       ...obj.profileObj,
       id: obj.googleId,
     });
