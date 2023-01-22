@@ -8,6 +8,7 @@ import PostForm from "../reusables/PostForm";
 function QuestionPage(props) {
   let { id } = useParams();
   useEffect(() => {
+    console.log("Ide");
     props.getQuestion(id);
     props.getAnswers(id);
   }, []);
@@ -34,7 +35,7 @@ function QuestionPage(props) {
           titlePlaceholder={"Title of your answer..."}
           previewLabel={"Answer Preview"}
           submitText={"Post Answer"}
-          onSubmit={props.postAnswer}
+          onSubmit={(answer) => props.postAnswer(answer)}
         />
       </div>
     </div>

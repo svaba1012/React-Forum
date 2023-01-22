@@ -13,72 +13,71 @@ import {
 
 export const getQuestion = (id) => async (dispatch) => {
   let resQue = await server.get(`/questions/${id}`);
-  let resUser = await server.get(`/users/${resQue.data.userId}`);
-
   dispatch({
     type: GET_QUESTION,
-    payload: { ...resQue.data, user: resUser.data },
+    payload: { ...resQue.data },
   });
 };
 
-export const postQuestion = (question) => async (dispatch, getState) => {
-  let state = getState();
-  let userId = state.auth.data.profileObj.googleId;
+export const postQuestion =
+  (question, navigate) => async (dispatch, getState) => {
+    let state = getState();
+    let userId = state.auth.data.profileObj.googleId;
+    let resUser = await server.get(`/users/${userId}`);
 
-  await server.post(`/questions`, {
-    title: question.title,
-    description: question.description,
-    voteUps: [],
-    voteDowns: [],
-    userId: userId,
-  });
+    let res = await server.post(`/questions`, {
+      title: question.title,
+      description: question.description,
+      voteUps: [],
+      voteDowns: [],
+      userId: userId,
+      user: resUser.data,
+    });
 
-  dispatch({ type: POST_QUESTION });
-};
+    dispatch({ type: POST_QUESTION, payload: res.data });
+    navigate(`/questions/${res.data.id}`);
+  };
 
-export const editQuestion = (question) => async (dispatch, getState) => {
-  let state = getState();
-  // let userId = state.auth.data.profileObj.googleId;
-  let id = state.question.id;
-  await server.put(`/questions/${id}`, {
-    ...state.question,
-    title: question.title,
-    description: question.description,
-  });
+export const editQuestion =
+  (question, navigate) => async (dispatch, getState) => {
+    let state = getState();
+    // let userId = state.auth.data.profileObj.googleId;
+    let id = state.question.id;
+    await server.put(`/questions/${id}`, {
+      ...state.question,
+      title: question.title,
+      description: question.description,
+    });
 
-  dispatch({ type: EDIT_QUESTION });
-};
+    dispatch({ type: EDIT_QUESTION });
+    navigate(`/questions/${id}`);
+  };
 
 export const getAnswers = (questionId) => async (dispatch) => {
-  let resQue = await server.get(`/answers`, {
+  let res = await server.get(`/answers`, {
     params: { questionId: questionId },
   });
 
-  let res = await Promise.all(
-    resQue.data.map(async (el) => {
-      let resUser = await server.get(`/users/${el.userId}`);
-      console.log({ ...el, user: resUser.data });
-      return { ...el, user: resUser.data };
-    })
-  );
-
-  dispatch({ type: GET_ANSWERS_FOR_QUESTION, payload: res });
+  dispatch({ type: GET_ANSWERS_FOR_QUESTION, payload: res.data });
 };
 
 export const postAnswer = (answer) => async (dispatch, getState) => {
   let state = getState();
   let userId = state.auth.data.profileObj.googleId;
+  let resUser = await server.get(`/users/${userId}`);
   let questionId = state.question.id;
-  await server.post(`/answers`, {
+
+  let res = await server.post(`/answers`, {
     title: answer.title,
     description: answer.description,
     voteUps: [],
     voteDowns: [],
     questionId: questionId,
     userId: userId,
+    user: resUser.data,
   });
 
-  dispatch({ type: POST_ANSWER });
+  dispatch({ type: POST_ANSWER, payload: res.data });
 };
 
 export const editAnswer = (answer, answerId) => async (dispatch, getState) => {

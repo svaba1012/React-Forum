@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import PostForm from "../reusables/PostForm";
 import { connect } from "react-redux";
 import { getQuestion, editQuestion } from "../../actions";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function QuestionEdit(props) {
   let { id } = useParams();
+  let navigate = useNavigate();
   useEffect(() => {
     console.log(id);
     props.getQuestion(id);
@@ -20,7 +21,7 @@ function QuestionEdit(props) {
       titlePlaceholder={"Title of your question..."}
       previewLabel={"Question Preview"}
       submitText={"Edit Question"}
-      onSubmit={props.editQuestion}
+      onSubmit={(question) => props.editQuestion(question, navigate)}
     />
   );
 }

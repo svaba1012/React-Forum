@@ -4,7 +4,6 @@ import "./MarkupBox.css";
 
 function MarkupBox(props) {
   let html = markupTranslate(props.markup);
-  console.log(html);
   return (
     <div
       className="markup-box"

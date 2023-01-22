@@ -30,7 +30,9 @@
 }
 
 .markup-box pre {
+  display: block;
   background-color: rgb(197, 197, 197);
+
   border-radius: 10px;
   padding: 10px;
   overflow-wrap: break-word;

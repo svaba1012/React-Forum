@@ -1,4 +1,9 @@
-import { GET_ANSWERS_FOR_QUESTION, VOTE_DOWN, VOTE_UP } from "../actions/types";
+import {
+  GET_ANSWERS_FOR_QUESTION,
+  POST_ANSWER,
+  VOTE_DOWN,
+  VOTE_UP,
+} from "../actions/types";
 
 export const answersReducer = (answers = [], action) => {
   switch (action.type) {
@@ -17,6 +22,10 @@ export const answersReducer = (answers = [], action) => {
           return { ...answer };
         }),
       ];
+    case POST_ANSWER:
+      // console.log();
+      answers.push(action.payload);
+      return [...answers];
     default:
       return [...answers];
   }
