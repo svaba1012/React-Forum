@@ -6,6 +6,9 @@ import {
   SIGN_OUT,
   VOTE_DOWN,
   VOTE_UP,
+  POST_QUESTION,
+  EDIT_QUESTION,
+  POST_ANSWER,
 } from "./types";
 
 export const getQuestion = (id) => async (dispatch) => {
@@ -16,6 +19,34 @@ export const getQuestion = (id) => async (dispatch) => {
     type: GET_QUESTION,
     payload: { ...resQue.data, user: resUser.data },
   });
+};
+
+export const postQuestion = (question) => async (dispatch, getState) => {
+  let state = getState();
+  let userId = state.auth.data.profileObj.googleId;
+
+  await server.post(`/questions`, {
+    title: question.title,
+    description: question.description,
+    voteUps: [],
+    voteDowns: [],
+    userId: userId,
+  });
+
+  dispatch({ type: POST_QUESTION });
+};
+
+export const editQuestion = (question) => async (dispatch, getState) => {
+  let state = getState();
+  // let userId = state.auth.data.profileObj.googleId;
+  let id = state.question.id;
+  await server.put(`/questions/${id}`, {
+    ...state.question,
+    title: question.title,
+    description: question.description,
+  });
+
+  dispatch({ type: EDIT_QUESTION });
 };
 
 export const getAnswers = (questionId) => async (dispatch) => {
@@ -32,6 +63,35 @@ export const getAnswers = (questionId) => async (dispatch) => {
   );
 
   dispatch({ type: GET_ANSWERS_FOR_QUESTION, payload: res });
+};
+
+export const postAnswer = (answer) => async (dispatch, getState) => {
+  let state = getState();
+  let userId = state.auth.data.profileObj.googleId;
+  let questionId = state.question.id;
+  await server.post(`/answers`, {
+    title: answer.title,
+    description: answer.description,
+    voteUps: [],
+    voteDowns: [],
+    questionId: questionId,
+    userId: userId,
+  });
+
+  dispatch({ type: POST_ANSWER });
+};
+
+export const editAnswer = (answer, answerId) => async (dispatch, getState) => {
+  let state = getState();
+  let answer = state.answers[answerId];
+
+  await server.put(`/answers/${answer.id}`, {
+    ...state.answers[answerId],
+    title: answer.title,
+    description: answer.description,
+  });
+
+  dispatch({ type: EDIT_QUESTION });
 };
 
 export const signIn = (obj) => async (dispatch) => {

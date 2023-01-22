@@ -1,0 +1,39 @@
+.markup-box {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.markup-box p {
+  font-size: medium;
+}
+
+.markup-box strong {
+  font-weight: 900;
+}
+
+.markup-box em {
+  font-style: italic;
+}
+
+.markup-box code {
+  background-color: rgb(197, 197, 197);
+  border-radius: 5px;
+  padding: 2px;
+}
+
+.markup-box blockquote {
+  border-left: 5px solid rgb(197, 197, 197);
+  margin-left: 1px;
+  padding: 15px;
+  padding-left: 50px;
+}
+
+.markup-box pre {
+  background-color: rgb(197, 197, 197);
+  border-radius: 10px;
+  padding: 10px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}

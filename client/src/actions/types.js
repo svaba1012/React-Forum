@@ -4,3 +4,7 @@ export const SIGN_IN = "SIGN_IN";
 export const SIGN_OUT = "SIGN_OUT";
 export const VOTE_UP = "VOTE_UP";
 export const VOTE_DOWN = "VOTE_DOWN";
+export const POST_QUESTION = "POST_QUESTION";
+export const POST_ANSWER = "POST_ANSWER";
+export const EDIT_QUESTION = "EDIT_QUESTION";
+export const EDIT_ANSWER = "EDIT_ANSWER";

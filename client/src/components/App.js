@@ -5,6 +5,7 @@ import Questions from "./routes/Questions.js";
 import QuestionCreate from "./routes/QuestionCreate.js";
 import MainPage from "./routes/MainPage.js";
 import QuestionPage from "./routes/QuestionPage.js";
+import QuestionEdit from "./routes/QuestionEdit.js";
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
 
           <Route path="/questions" element={<Questions />} exact />
           <Route path="/questions/new" element={<QuestionCreate />} exact />
+          <Route path="/questions/edit/:id" element={<QuestionEdit />} exact />
+
           <Route path="/questions/:id" element={<QuestionPage />} exact />
         </Routes>
       </BrowserRouter>

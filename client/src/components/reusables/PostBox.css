@@ -16,3 +16,14 @@
 .post-box-info div i {
   font-size: xx-large;
 }
+
+.post-box-content {
+  width: 100%;
+}
+
+.content-footer {
+  margin-top: 20px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
