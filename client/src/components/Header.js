@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import GoogleAuth from "./GoogleAuth";
+import GoogleSignIn from "./GoogleSignIn";
 
 function Header() {
   return (
@@ -17,8 +17,7 @@ function Header() {
             <i className="search link icon"></i>
           </div>
         </div>
-        <GoogleAuth />
-        {/* <a className="ui item">Logout</a> */}
+        <GoogleSignIn />
       </div>
     </div>
   );

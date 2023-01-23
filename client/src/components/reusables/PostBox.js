@@ -10,7 +10,7 @@ function PostBox({ postData, voteUp, id, voteDown, auth }) {
     if (!auth.isSigned) {
       return;
     }
-    if (auth.data.googleId !== postData.userId) {
+    if (auth.data.sub !== postData.userId) {
       return;
     }
     let link = "/questions";
@@ -51,7 +51,7 @@ function PostBox({ postData, voteUp, id, voteDown, auth }) {
             <div className="ui feed">
               <div className="event">
                 <div className="label">
-                  <img src={postData.user.imageUrl} alt="User pic" />
+                  <img src={postData.user.picture} alt="User pic" />
                 </div>
                 <div className="content">
                   <div className="summary">

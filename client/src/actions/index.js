@@ -93,13 +93,26 @@ export const editAnswer = (answer, answerId) => async (dispatch, getState) => {
   dispatch({ type: EDIT_QUESTION });
 };
 
+// export const signIn = (obj) => async (dispatch) => {
+//   console.log(obj);
+//   let res = await server.get(`/users/${obj.googleId}`);
+//   if (!res.data.googleId) {
+//     await server.post(`/users`, {
+//       ...obj.profileObj,
+//       id: obj.googleId,
+//     });
+//   }
+
+//   dispatch({ type: SIGN_IN, payload: obj });
+// };
+
 export const signIn = (obj) => async (dispatch) => {
-  console.log(obj);
-  let res = await server.get(`/users/${obj.googleId}`);
-  if (!res.data.googleId) {
+  try {
+    await server.get(`/users/${obj.sub}`);
+  } catch (error) {
     await server.post(`/users`, {
-      ...obj.profileObj,
-      id: obj.googleId,
+      ...obj,
+      id: obj.sub,
     });
   }
 
@@ -118,7 +131,7 @@ export const voteUp = (id) => async (dispatch, getState) => {
   if (id >= 0) {
     post = state.answers[id];
   }
-  let userId = state.auth.data.profileObj.googleId;
+  let userId = state.auth.data.sub;
   let newVoteUps = post.voteUps;
   if (!newVoteUps.includes(userId)) {
     newVoteUps.push(userId);
@@ -150,7 +163,7 @@ export const voteDown = (id) => async (dispatch, getState) => {
   if (id >= 0) {
     post = state.answers[id];
   }
-  let userId = state.auth.data.profileObj.googleId;
+  let userId = state.auth.data.sub;
   let newVoteDowns = post.voteDowns;
 
   if (!newVoteDowns.includes(userId)) {

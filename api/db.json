@@ -8,12 +8,14 @@
       "voteDowns": [],
       "userId": "109736660049464519174",
       "user": {
-        "googleId": "109736660049464519174",
-        "imageUrl": "https://lh3.googleusercontent.com/a/AEdFTp4x5xnyLqeo01zFXP-8N2qheLl65dpn3rwTb6Hl=s96-c",
-        "email": "stefanivanovic1012@gmail.com",
+        "sub": "109736660049464519174",
         "name": "Stefan Ivanovic",
-        "givenName": "Stefan",
-        "familyName": "Ivanovic",
+        "given_name": "Stefan",
+        "family_name": "Ivanovic",
+        "picture": "https://lh3.googleusercontent.com/a/AEdFTp4x5xnyLqeo01zFXP-8N2qheLl65dpn3rwTb6Hl=s96-c",
+        "email": "stefanivanovic1012@gmail.com",
+        "email_verified": true,
+        "locale": "sr",
         "id": "109736660049464519174"
       }
     }
@@ -21,12 +23,14 @@
   "answers": [],
   "users": [
     {
-      "googleId": "109736660049464519174",
-      "imageUrl": "https://lh3.googleusercontent.com/a/AEdFTp4x5xnyLqeo01zFXP-8N2qheLl65dpn3rwTb6Hl=s96-c",
-      "email": "stefanivanovic1012@gmail.com",
+      "sub": "109736660049464519174",
       "name": "Stefan Ivanovic",
-      "givenName": "Stefan",
-      "familyName": "Ivanovic",
+      "given_name": "Stefan",
+      "family_name": "Ivanovic",
+      "picture": "https://lh3.googleusercontent.com/a/AEdFTp4x5xnyLqeo01zFXP-8N2qheLl65dpn3rwTb6Hl=s96-c",
+      "email": "stefanivanovic1012@gmail.com",
+      "email_verified": true,
+      "locale": "sr",
       "id": "109736660049464519174"
     }
   ]
