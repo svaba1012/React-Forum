@@ -1,4 +1,5 @@
 import {
+  EDIT_ANSWER,
   GET_ANSWERS_FOR_QUESTION,
   POST_ANSWER,
   VOTE_DOWN,
@@ -26,6 +27,18 @@ export const answersReducer = (answers = [], action) => {
       // console.log();
       answers.push(action.payload);
       return [...answers];
+
+    case EDIT_ANSWER:
+      let temp = [
+        ...answers.map((answer, id) => {
+          if (id === action.payload.id) {
+            return action.payload.data;
+          }
+          return answer;
+        }),
+      ];
+      console.log(temp);
+      return temp;
     default:
       return [...answers];
   }

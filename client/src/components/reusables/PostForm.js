@@ -1,24 +1,41 @@
 import React, { useRef } from "react";
+import { connect } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import MarkupBox from "../reusables/MarkupBox";
 import "./PostForm.css";
 
+const renderError = (error, touched) => {
+  if (error && touched) {
+    return (
+      <h3>
+        <span style={{ color: "red", fontSize: "large" }}>*</span>
+        {error}
+      </h3>
+    );
+  }
+};
 const renderTitleInput = (formProps) => {
+  let styleClass = "ui input fluid ";
+  if (formProps.meta.error && formProps.meta.touched) {
+    styleClass += "error";
+  }
   return (
-    <div className="ui segment">
+    <div className="field">
       <h2>{formProps.label}</h2>
-      <div className="ui input fluid">
-        <input
-          placeholder={formProps.placeholder}
-          onChange={formProps.input.onChange}
-          value={formProps.input.value}
-        />
+      {renderError(formProps.meta.error, formProps.meta.touched)}
+      <div className={styleClass}>
+        <input placeholder={formProps.placeholder} {...formProps.input} />
       </div>
     </div>
   );
 };
 
 const renderContentInput = (formProps) => {
+  let styleClass = "";
+  if (formProps.meta.error && formProps.meta.touched) {
+    styleClass += "my-error";
+  }
+
   const renderOptions = () => {
     const insertInline = async (text, endOffset) => {
       let cursorPos = formProps.questionContentEl.current.selectionStart;
@@ -56,29 +73,33 @@ const renderContentInput = (formProps) => {
     };
 
     return (
-      <div className="option-bar">
-        <div onClick={() => insertBlock("#your text", 0)}>
+      <div className={"option-bar " + styleClass}>
+        <div onClick={() => insertBlock("#your text", 0)} title="Heading">
           <i className="fa-solid fa-heading"></i>
         </div>
-        <div onClick={() => insertInline("**your text**", 2)}>
+        <div onClick={() => insertInline("**your text**", 2)} title="Bold">
           <i className="fa-solid fa-bold"></i>
         </div>
-        <div onClick={() => insertInline("*your text*", 1)}>
+        <div onClick={() => insertInline("*your text*", 1)} title="Italic">
           <i className="fa-solid fa-italic"></i>
         </div>
-        <div onClick={() => insertInline("`your text`", 1)}>
+        <div onClick={() => insertInline("`your text`", 1)} title="Code">
           <i className="fa-solid fa-code"></i>
         </div>
-        <div onClick={() => insertBlock("```\nyour text\n```", 4)}>
+        <div
+          onClick={() => insertBlock("```\nyour text\n```", 4)}
+          title="Block Code"
+        >
           <i className="fa-solid fa-file-code"></i>
         </div>
-        <div>
+        <div title="Image">
           <i className="fa-solid fa-image"></i>
         </div>
-        <div onClick={() => insertBlock(">your text", 0)}>
+        <div onClick={() => insertBlock(">your text", 0)} title="Block quote">
           <i className="fa-solid fa-quote-right"></i>
         </div>
         <div
+          title="Link"
           onClick={() =>
             insertInline("[your text](https://www.functionnotdeclared.com)", 38)
           }
@@ -99,12 +120,13 @@ const renderContentInput = (formProps) => {
   };
 
   return (
-    <div className="ui segment">
+    <div className="field">
       <h2>{formProps.contentLabel}</h2>
+      {renderError(formProps.meta.error, formProps.meta.touched)}
       {renderOptions(formProps)}
       <textarea
         ref={formProps.questionContentEl}
-        className="text-area"
+        className={"text-area " + styleClass}
         rows={10}
         placeholder={formProps.contentPlaceholder}
         onChange={formProps.input.onChange}
@@ -119,8 +141,20 @@ function PostForm(props) {
   let questionContentEl = useRef();
 
   const onSubmit = (formValues) => {
+    console.log("Proba");
     console.log(formValues);
     props.onSubmit(formValues);
+  };
+  const renderButton = () => {
+    let bClass = props.isSigned ? "primary" : "disabled";
+    let title = props.isSigned
+      ? `Click to ${props.submitText}`
+      : `Sign in to ${props.submitText}`;
+    return (
+      <div title={title}>
+        <button className={"ui button " + bClass}>{props.submitText}</button>
+      </div>
+    );
   };
 
   return (
@@ -140,12 +174,30 @@ function PostForm(props) {
         contentPlaceholder={props.contentPlaceholder}
         previewLabel={props.previewLabel}
       ></Field>
-      <button className="ui button primary">{props.submitText}</button>
+      {renderButton()}
     </form>
   );
 }
 
-export default reduxForm({
+const validate = (formInputs) => {
+  let error = {};
+  if (!formInputs.title || formInputs.title.length < 10) {
+    error.title = "Title must be at least 10 charachters long!";
+  }
+  if (!formInputs.description || formInputs.description.length < 20) {
+    error.description = "Description must be at least 20 charachters long!";
+  }
+  return error;
+};
+
+const formPostForm = reduxForm({
   form: "postForm",
+  validate,
   enableReinitialize: true,
 })(PostForm);
+
+const mapStateToProps = (state) => {
+  return { isSigned: state.auth.isSigned };
+};
+
+export default connect(mapStateToProps)(formPostForm);

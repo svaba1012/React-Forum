@@ -19,11 +19,34 @@
 
 .post-box-content {
   width: 100%;
+  position: relative;
+}
+
+.content-body {
+  margin-bottom: 80px;
 }
 
 .content-footer {
+  position: absolute;
+  bottom: 10px;
   margin-top: 20px;
   display: flex;
   width: 100%;
   justify-content: space-between;
+}
+
+.vote-inactive {
+  color: rgb(197, 197, 197);
+}
+
+.edit-answer-x-mark {
+  color: rgb(255, 80, 80);
+  font-size: xx-large;
+  text-align: right;
+}
+
+.edit-answer-x-mark i:hover {
+  color: red;
+  cursor: pointer;
+  transform: scale(1.1);
 }

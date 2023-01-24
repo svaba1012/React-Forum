@@ -2,6 +2,8 @@
   resize: none;
   font-size: medium;
   width: 100%;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .option-bar {
@@ -31,4 +33,31 @@
 
 a {
   text-decoration: underline;
+}
+
+.field {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.my-error {
+  border-color: #e0b4b4;
+  color: #9f3a38;
+  background-color: #fff6f6;
+}
+
+.my-error::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #c49493;
+  opacity: 1; /* Firefox */
+}
+
+.my-error:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #9f3a38;
+}
+
+.my-error::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #9f3a38;
 }

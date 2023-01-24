@@ -20,6 +20,7 @@ function QuestionPage(props) {
     <div>
       <h1>{props.question.title} </h1>
       <PostBox postData={props.question} id={-1} />
+      <hr />
       <div className="ui segment">
         <h3>{props.answers.length} Answers</h3>
         {props.answers.map((answer, id) => {
@@ -28,6 +29,7 @@ function QuestionPage(props) {
       </div>
       <div className="ui segment">
         <h1>Answer this question</h1>
+        <hr />
         <PostForm
           titleLabel={"Answer title"}
           contentLabel={"Answer description"}

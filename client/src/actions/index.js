@@ -9,6 +9,7 @@ import {
   POST_QUESTION,
   EDIT_QUESTION,
   POST_ANSWER,
+  EDIT_ANSWER,
 } from "./types";
 
 export const getQuestion = (id) => async (dispatch) => {
@@ -22,8 +23,10 @@ export const getQuestion = (id) => async (dispatch) => {
 export const postQuestion =
   (question, navigate) => async (dispatch, getState) => {
     let state = getState();
-    let userId = state.auth.data.profileObj.googleId;
+    let userId = state.auth.data.sub;
     let resUser = await server.get(`/users/${userId}`);
+
+    let curDate = new Date();
 
     let res = await server.post(`/questions`, {
       title: question.title,
@@ -32,6 +35,7 @@ export const postQuestion =
       voteDowns: [],
       userId: userId,
       user: resUser.data,
+      date: curDate,
     });
 
     dispatch({ type: POST_QUESTION, payload: res.data });
@@ -63,9 +67,11 @@ export const getAnswers = (questionId) => async (dispatch) => {
 
 export const postAnswer = (answer) => async (dispatch, getState) => {
   let state = getState();
-  let userId = state.auth.data.profileObj.googleId;
+  let userId = state.auth.data.sub;
   let resUser = await server.get(`/users/${userId}`);
   let questionId = state.question.id;
+
+  let curDate = new Date();
 
   let res = await server.post(`/answers`, {
     title: answer.title,
@@ -75,36 +81,22 @@ export const postAnswer = (answer) => async (dispatch, getState) => {
     questionId: questionId,
     userId: userId,
     user: resUser.data,
+    date: curDate,
   });
 
   dispatch({ type: POST_ANSWER, payload: res.data });
 };
 
 export const editAnswer = (answer, answerId) => async (dispatch, getState) => {
-  let state = getState();
-  let answer = state.answers[answerId];
-
-  await server.put(`/answers/${answer.id}`, {
-    ...state.answers[answerId],
-    title: answer.title,
-    description: answer.description,
+  console.log("Asa");
+  console.log(answer);
+  console.log(answerId);
+  await server.patch(`/answers/${answer.id}`, {
+    ...answer,
   });
 
-  dispatch({ type: EDIT_QUESTION });
+  dispatch({ type: EDIT_ANSWER, payload: { data: answer, id: answerId } });
 };
-
-// export const signIn = (obj) => async (dispatch) => {
-//   console.log(obj);
-//   let res = await server.get(`/users/${obj.googleId}`);
-//   if (!res.data.googleId) {
-//     await server.post(`/users`, {
-//       ...obj.profileObj,
-//       id: obj.googleId,
-//     });
-//   }
-
-//   dispatch({ type: SIGN_IN, payload: obj });
-// };
 
 export const signIn = (obj) => async (dispatch) => {
   try {
