@@ -1,16 +1,28 @@
 import React, { useState } from "react";
-import { voteUp, voteDown, editAnswer } from "../../actions";
 import { connect } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import MarkupBox from "./MarkupBox";
-import { Link } from "react-router-dom";
-import printDate from "../../utils/printDate";
 import AnswerEdit from "./AnswerEdit";
+import { voteUp, voteDown } from "../../actions";
+import printDate from "../../utils/printDate";
 import "./PostBox.css";
 
-function PostBox({ postData, voteUp, id, voteDown, auth, editAnswer }) {
+function PostBox({
+  postData,
+  voteUp,
+  id,
+  voteDown,
+  auth,
+  onDelete,
+  deleteAnswer,
+  deleteQuestion,
+  deleteAnswersOfQuestion,
+}) {
   const [edit, setEdit] = useState(false);
+  const navigate = useNavigate();
 
   const renderEditForm = () => {
+    // edit form for answer post
     if (!edit || id < 0) {
       return;
     }
@@ -35,37 +47,18 @@ function PostBox({ postData, voteUp, id, voteDown, auth, editAnswer }) {
     if (auth.data.sub !== postData.userId) {
       return;
     }
-    let link = "/questions";
-    if (id >= 0) {
-      link = "/answers";
-      if (edit) {
-        return;
-      }
-      return (
-        <div>
-          <button
-            className="ui button primary"
-            onClick={() => {
-              setEdit(true);
-            }}
-          >
-            Edit
-          </button>
-          <Link className="ui button red" to={`${link}/delete/${postData.id}`}>
-            Delete
-          </Link>
-        </div>
-      );
-    }
-
+    const onEdit =
+      id < 0
+        ? () => navigate(`/questions/edit/${postData.id}`)
+        : () => setEdit(true);
     return (
       <div>
-        <Link className="ui button primary" to={`${link}/edit/${postData.id}`}>
+        <button className="ui button primary" onClick={onEdit}>
           Edit
-        </Link>
-        <Link className="ui button red" to={`${link}/delete/${postData.id}`}>
+        </button>
+        <button className="ui button red" onClick={onDelete}>
           Delete
-        </Link>
+        </button>
       </div>
     );
   };
@@ -105,7 +98,10 @@ function PostBox({ postData, voteUp, id, voteDown, auth, editAnswer }) {
                   </div>
                   <div className="content">
                     <div className="summary">
-                      Posted by <a>{postData.user.name}</a>
+                      Posted by{" "}
+                      <Link to={`/users/${postData.userId}`}>
+                        {postData.user.name}
+                      </Link>
                       <div className="date">{printDate(postData.date)}</div>
                     </div>
                   </div>
@@ -124,6 +120,7 @@ const mapStateToProps = (state) => {
   return { auth: state.auth };
 };
 
-export default connect(mapStateToProps, { voteUp, voteDown, editAnswer })(
-  PostBox
-);
+export default connect(mapStateToProps, {
+  voteUp,
+  voteDown,
+})(PostBox);

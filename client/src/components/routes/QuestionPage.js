@@ -1,17 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getQuestion, getAnswers, postAnswer } from "../../actions";
+import { useNavigate, useParams } from "react-router-dom";
 import PostBox from "../reusables/PostBox";
 import PostForm from "../reusables/PostForm";
+import {
+  getQuestion,
+  getAnswers,
+  postAnswer,
+  deleteAnswer,
+  deleteAnswersOfQuestion,
+  deleteQuestion,
+} from "../../actions";
 
 function QuestionPage(props) {
   let { id } = useParams();
+  let navigate = useNavigate();
   useEffect(() => {
     console.log("Ide");
     props.getQuestion(id);
     props.getAnswers(id);
   }, []);
+  let scroolRef = useRef();
 
   if (!props.question.title) {
     return;
@@ -19,12 +28,28 @@ function QuestionPage(props) {
   return (
     <div>
       <h1>{props.question.title} </h1>
-      <PostBox postData={props.question} id={-1} />
+      <PostBox
+        postData={props.question}
+        id={-1}
+        onDelete={() => {
+          props.deleteAnswersOfQuestion(props.question.id);
+          props.deleteQuestion(props.question.id);
+          navigate("/questions");
+        }}
+      />
       <hr />
-      <div className="ui segment">
+
+      <div className="ui segment" ref={scroolRef}>
         <h3>{props.answers.length} Answers</h3>
         {props.answers.map((answer, id) => {
-          return <PostBox postData={answer} key={id} id={id} />;
+          return (
+            <PostBox
+              postData={answer}
+              key={id}
+              id={id}
+              onDelete={() => props.deleteAnswer(answer.id, id)}
+            />
+          );
         })}
       </div>
       <div className="ui segment">
@@ -37,7 +62,10 @@ function QuestionPage(props) {
           titlePlaceholder={"Title of your answer..."}
           previewLabel={"Answer Preview"}
           submitText={"Post Answer"}
-          onSubmit={(answer) => props.postAnswer(answer)}
+          onSubmit={(answer) => {
+            props.postAnswer(answer);
+            scroolRef.current.scrollIntoView();
+          }}
         />
       </div>
     </div>
@@ -52,4 +80,7 @@ export default connect(mapStateToProps, {
   getQuestion,
   getAnswers,
   postAnswer,
+  deleteAnswer,
+  deleteQuestion,
+  deleteAnswersOfQuestion,
 })(QuestionPage);

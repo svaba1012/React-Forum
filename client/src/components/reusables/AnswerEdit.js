@@ -24,8 +24,4 @@ function AnswerEdit(props) {
   );
 }
 
-// const mapStateToProps = (state) => {
-//   return { post: state.question };
-// };
-
 export default connect(null, { editAnswer })(AnswerEdit);

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import PostForm from "../reusables/PostForm";
 import { connect } from "react-redux";
-import { getQuestion, editQuestion } from "../../actions";
 import { useParams, useNavigate } from "react-router-dom";
+import PostForm from "../reusables/PostForm";
+import { getQuestion, editQuestion } from "../../actions";
 
 function QuestionEdit(props) {
   let { id } = useParams();

@@ -6,6 +6,7 @@ import QuestionCreate from "./routes/QuestionCreate.js";
 import MainPage from "./routes/MainPage.js";
 import QuestionPage from "./routes/QuestionPage.js";
 import QuestionEdit from "./routes/QuestionEdit.js";
+import UserPage from "./routes/UserPage.js";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/questions/edit/:id" element={<QuestionEdit />} exact />
 
           <Route path="/questions/:id" element={<QuestionPage />} exact />
+          <Route path="/users/:id" element={<UserPage />} exact />
         </Routes>
       </BrowserRouter>
     </div>

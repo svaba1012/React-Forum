@@ -27,7 +27,11 @@ function GoogleSignIn(props) {
   };
 
   return (
-    <button className="ui button red" onClick={onButtonClick}>
+    <button
+      className="ui button red"
+      onClick={onButtonClick}
+      style={{ textAlign: "right" }}
+    >
       <i className="fa-brands fa-google"></i> Sign{" "}
       {props.isSigned ? "out" : "in"}
     </button>

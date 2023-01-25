@@ -1,4 +1,6 @@
 import {
+  DELETE_ANSWER,
+  DELETE_ANSWERS_OF_QUESTION,
   EDIT_ANSWER,
   GET_ANSWERS_FOR_QUESTION,
   POST_ANSWER,
@@ -39,6 +41,10 @@ export const answersReducer = (answers = [], action) => {
       ];
       console.log(temp);
       return temp;
+    case DELETE_ANSWER:
+      return [...answers.filter((el, id) => id !== action.payload)];
+    case DELETE_ANSWERS_OF_QUESTION:
+      return [];
     default:
       return [...answers];
   }

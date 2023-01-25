@@ -1,6 +1,6 @@
-import PostForm from "../reusables/PostForm";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import PostForm from "../reusables/PostForm";
 import { getQuestion, postQuestion } from "../../actions";
 
 function QuestionCreate(props) {

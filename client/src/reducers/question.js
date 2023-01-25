@@ -1,4 +1,5 @@
 import {
+  DELETE_QUESTION,
   GET_QUESTION,
   POST_QUESTION,
   VOTE_DOWN,
@@ -18,6 +19,8 @@ export const questionReducer = (question = null, action) => {
         return { ...question };
       }
       return { ...question, ...action.payload.data };
+    case DELETE_QUESTION:
+      return {};
     default:
       return { ...question };
   }

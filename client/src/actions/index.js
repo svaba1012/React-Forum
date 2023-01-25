@@ -10,13 +10,17 @@ import {
   EDIT_QUESTION,
   POST_ANSWER,
   EDIT_ANSWER,
+  GET_USER,
+  DELETE_ANSWER,
+  DELETE_QUESTION,
+  DELETE_ANSWERS_OF_QUESTION,
 } from "./types";
 
 export const getQuestion = (id) => async (dispatch) => {
-  let resQue = await server.get(`/questions/${id}`);
+  let res = await server.get(`/questions/${id}`);
   dispatch({
     type: GET_QUESTION,
-    payload: { ...resQue.data },
+    payload: { ...res.data },
   });
 };
 
@@ -45,7 +49,6 @@ export const postQuestion =
 export const editQuestion =
   (question, navigate) => async (dispatch, getState) => {
     let state = getState();
-    // let userId = state.auth.data.profileObj.googleId;
     let id = state.question.id;
     await server.put(`/questions/${id}`, {
       ...state.question,
@@ -56,6 +59,15 @@ export const editQuestion =
     dispatch({ type: EDIT_QUESTION });
     navigate(`/questions/${id}`);
   };
+
+export const deleteQuestion = (id) => async (dispatch) => {
+  let res = await server.delete(`/questions/${id}`);
+
+  dispatch({
+    type: DELETE_QUESTION,
+    payload: id,
+  });
+};
 
 export const getAnswers = (questionId) => async (dispatch) => {
   let res = await server.get(`/answers`, {
@@ -88,14 +100,30 @@ export const postAnswer = (answer) => async (dispatch, getState) => {
 };
 
 export const editAnswer = (answer, answerId) => async (dispatch, getState) => {
-  console.log("Asa");
-  console.log(answer);
-  console.log(answerId);
   await server.patch(`/answers/${answer.id}`, {
     ...answer,
   });
 
   dispatch({ type: EDIT_ANSWER, payload: { data: answer, id: answerId } });
+};
+
+export const deleteAnswer = (answerId, id) => async (dispatch) => {
+  let res = await server.delete(`/answers/${answerId}`);
+
+  dispatch({ type: DELETE_ANSWER, payload: id });
+};
+
+export const deleteAnswersOfQuestion = (id) => async (dispatch) => {
+  let res = await server.get(`/answers`, {
+    params: { questionId: id },
+  });
+
+  dispatch({ type: DELETE_ANSWERS_OF_QUESTION });
+};
+
+export const getUser = (userId) => async (dispatch) => {
+  let res = await server.get(`/users/${userId}`);
+  dispatch({ type: GET_USER, payload: res.data });
 };
 
 export const signIn = (obj) => async (dispatch) => {

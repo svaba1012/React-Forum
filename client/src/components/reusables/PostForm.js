@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { connect } from "react-redux";
-import { reduxForm, Field } from "redux-form";
+import { reduxForm, Field, reset } from "redux-form";
 import MarkupBox from "../reusables/MarkupBox";
 import "./PostForm.css";
 
@@ -14,6 +14,7 @@ const renderError = (error, touched) => {
     );
   }
 };
+
 const renderTitleInput = (formProps) => {
   let styleClass = "ui input fluid ";
   if (formProps.meta.error && formProps.meta.touched) {
@@ -190,10 +191,13 @@ const validate = (formInputs) => {
   return error;
 };
 
+const afterSubmit = (result, dispatch) => dispatch(reset("postForm"));
+
 const formPostForm = reduxForm({
   form: "postForm",
   validate,
   enableReinitialize: true,
+  onSubmitSuccess: afterSubmit,
 })(PostForm);
 
 const mapStateToProps = (state) => {
