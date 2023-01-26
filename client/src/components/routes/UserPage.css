@@ -1,0 +1,17 @@
+.tab {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.profile-stats {
+  width: 20%;
+}
+
+.profile-about {
+  width: 70%;
+}
+
+.activity {
+  width: 48%;
+}

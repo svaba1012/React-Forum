@@ -10,15 +10,20 @@ import {
   deleteAnswer,
   deleteAnswersOfQuestion,
   deleteQuestion,
+  getUsersOfPosts,
+  addUserOfPosts,
 } from "../../actions";
 
 function QuestionPage(props) {
   let { id } = useParams();
   let navigate = useNavigate();
   useEffect(() => {
-    console.log("Ide");
-    props.getQuestion(id);
-    props.getAnswers(id);
+    const func = async () => {
+      await props.getQuestion(id);
+      await props.getAnswers(id);
+      await props.getUsersOfPosts();
+    };
+    func();
   }, []);
   let scroolRef = useRef();
 
@@ -64,6 +69,7 @@ function QuestionPage(props) {
           submitText={"Post Answer"}
           onSubmit={(answer) => {
             props.postAnswer(answer);
+            props.addUserOfPosts();
             scroolRef.current.scrollIntoView();
           }}
         />
@@ -83,4 +89,6 @@ export default connect(mapStateToProps, {
   deleteAnswer,
   deleteQuestion,
   deleteAnswersOfQuestion,
+  getUsersOfPosts,
+  addUserOfPosts,
 })(QuestionPage);

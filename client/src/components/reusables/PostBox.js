@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import MarkupBox from "./MarkupBox";
 import AnswerEdit from "./AnswerEdit";
 import { voteUp, voteDown } from "../../actions";
-import printDate from "../../utils/printDate";
+import { printDate } from "../../utils/date";
 import "./PostBox.css";
 
 function PostBox({
@@ -13,6 +13,7 @@ function PostBox({
   id,
   voteDown,
   auth,
+  user,
   onDelete,
   deleteAnswer,
   deleteQuestion,
@@ -76,6 +77,10 @@ function PostBox({
     );
   };
 
+  if (!user[postData.userId]) {
+    return;
+  }
+
   return (
     <div className="ui segment">
       <div className=" post-box">
@@ -94,13 +99,13 @@ function PostBox({
               <div className="ui feed">
                 <div className="event">
                   <div className="label">
-                    <img src={postData.user.picture} alt="User pic" />
+                    <img src={user[postData.userId].picture} alt="User pic" />
                   </div>
                   <div className="content">
                     <div className="summary">
                       Posted by{" "}
                       <Link to={`/users/${postData.userId}`}>
-                        {postData.user.name}
+                        {user[postData.userId].name}
                       </Link>
                       <div className="date">{printDate(postData.date)}</div>
                     </div>
@@ -117,7 +122,7 @@ function PostBox({
 }
 
 const mapStateToProps = (state) => {
-  return { auth: state.auth };
+  return { auth: state.auth, user: state.user };
 };
 
 export default connect(mapStateToProps, {

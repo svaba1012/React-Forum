@@ -14,6 +14,8 @@ import {
   DELETE_ANSWER,
   DELETE_QUESTION,
   DELETE_ANSWERS_OF_QUESTION,
+  GET_USERS_OF_POSTS,
+  ADD_USER_OF_POSTS,
 } from "./types";
 
 export const getQuestion = (id) => async (dispatch) => {
@@ -28,7 +30,7 @@ export const postQuestion =
   (question, navigate) => async (dispatch, getState) => {
     let state = getState();
     let userId = state.auth.data.sub;
-    let resUser = await server.get(`/users/${userId}`);
+    // let resUser = await server.get(`/users/${userId}`);
 
     let curDate = new Date();
 
@@ -38,7 +40,7 @@ export const postQuestion =
       voteUps: [],
       voteDowns: [],
       userId: userId,
-      user: resUser.data,
+      // user: resUser.data,
       date: curDate,
     });
 
@@ -61,7 +63,7 @@ export const editQuestion =
   };
 
 export const deleteQuestion = (id) => async (dispatch) => {
-  let res = await server.delete(`/questions/${id}`);
+  await server.delete(`/questions/${id}`);
 
   dispatch({
     type: DELETE_QUESTION,
@@ -80,7 +82,6 @@ export const getAnswers = (questionId) => async (dispatch) => {
 export const postAnswer = (answer) => async (dispatch, getState) => {
   let state = getState();
   let userId = state.auth.data.sub;
-  let resUser = await server.get(`/users/${userId}`);
   let questionId = state.question.id;
 
   let curDate = new Date();
@@ -92,7 +93,6 @@ export const postAnswer = (answer) => async (dispatch, getState) => {
     voteDowns: [],
     questionId: questionId,
     userId: userId,
-    user: resUser.data,
     date: curDate,
   });
 
@@ -108,13 +108,13 @@ export const editAnswer = (answer, answerId) => async (dispatch, getState) => {
 };
 
 export const deleteAnswer = (answerId, id) => async (dispatch) => {
-  let res = await server.delete(`/answers/${answerId}`);
+  await server.delete(`/answers/${answerId}`);
 
   dispatch({ type: DELETE_ANSWER, payload: id });
 };
 
 export const deleteAnswersOfQuestion = (id) => async (dispatch) => {
-  let res = await server.get(`/answers`, {
+  await server.get(`/answers`, {
     params: { questionId: id },
   });
 
@@ -123,7 +123,51 @@ export const deleteAnswersOfQuestion = (id) => async (dispatch) => {
 
 export const getUser = (userId) => async (dispatch) => {
   let res = await server.get(`/users/${userId}`);
-  dispatch({ type: GET_USER, payload: res.data });
+  let resAns = await server.get(`/answers`, { params: { userId: userId } });
+  let resQue = await server.get(`/questions`, { params: { userId: userId } });
+
+  dispatch({
+    type: GET_USER,
+    payload: {
+      ...res.data,
+      questionCount: resQue.data.length,
+      answerCount: resAns.data.length,
+    },
+  });
+};
+
+export const getUsersOfPosts = () => async (dispatch, getState) => {
+  function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+  let { answers, question } = getState();
+  let userIds = answers.map((el) => el.userId);
+  userIds.push(question.userId);
+  let uniqueUserIds = userIds.filter(onlyUnique);
+  let res = await Promise.all(
+    uniqueUserIds.map(async (userId) => {
+      let r = await server.get(`/users/${userId}`);
+      return r.data;
+    })
+  );
+
+  let resObj = {};
+  res.forEach((user) => {
+    resObj[user.sub] = user;
+  });
+
+  dispatch({ type: GET_USERS_OF_POSTS, payload: resObj });
+};
+
+export const addUserOfPosts = () => async (dispatch, getState) => {
+  let curUser = getState().auth.data;
+  let users = getState().user;
+  let res = null;
+  if (!users[curUser.sub]) {
+    res = curUser;
+  }
+
+  dispatch({ type: ADD_USER_OF_POSTS, payload: res });
 };
 
 export const signIn = (obj) => async (dispatch) => {
@@ -133,14 +177,21 @@ export const signIn = (obj) => async (dispatch) => {
     await server.post(`/users`, {
       ...obj,
       id: obj.sub,
+      creationDate: new Date(),
+      location: null,
+      github: null,
+      about: null,
+      lastSeen: new Date(),
     });
   }
 
   dispatch({ type: SIGN_IN, payload: obj });
 };
 
-export const signOut = () => {
-  return { type: SIGN_OUT };
+export const signOut = () => async (dispatch, getState) => {
+  let user = getState().auth.data;
+  await server.patch(`users/${user.id}`, { lastSeen: new Date() });
+  dispatch({ type: SIGN_OUT });
 };
 
 export const voteUp = (id) => async (dispatch, getState) => {
