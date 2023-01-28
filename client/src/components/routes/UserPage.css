@@ -4,6 +4,10 @@
   justify-content: space-between;
 }
 
+.list-icon {
+  font-size: x-large;
+}
+
 .profile-stats {
   width: 20%;
 }
@@ -12,6 +16,53 @@
   width: 70%;
 }
 
+.about {
+  font-size: medium;
+}
+
 .activity {
   width: 48%;
+}
+
+.post-flex {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  font-size: medium;
+  margin: 5px;
+}
+
+.post-date {
+  margin-left: auto;
+  text-align: right;
+  color: grey;
+}
+
+.post-flex div {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.post-title {
+  margin-left: 5px;
+  margin-right: 5px;
+  font-size: large;
+}
+
+.post-votes {
+  padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: 1px solid rgba(7, 7, 7, 0.15);
+  box-shadow: 0 1px 2px 0 rgb(34 36 38 / 15%);
+  border-radius: 3px;
+}
+
+.no-post {
+  text-align: center;
+  font-size: medium;
+}
+
+.settings-input {
+  margin: 15px;
 }

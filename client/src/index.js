@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
@@ -10,7 +10,9 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-ReactDOM.render(
+const root = createRoot(document.querySelector("#root"));
+
+root.render(
   <Provider
     store={createStore(reducer, composeEnhancers(applyMiddleware(thunk)))}
   >
@@ -18,6 +20,5 @@ ReactDOM.render(
       <App />
     </GoogleOAuthProvider>
     ;
-  </Provider>,
-  document.querySelector("#root")
+  </Provider>
 );

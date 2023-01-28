@@ -6,7 +6,10 @@ function TabView(props) {
 
   return (
     <div>
-      <div className="ui secondary pointing menu tabs-container">
+      <div
+        className="ui secondary pointing menu tabs-container"
+        style={{ width: `${props.tabs.length * 80}px` }}
+      >
         {props.tabs.map((el, id) => {
           return (
             <div

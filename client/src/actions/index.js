@@ -16,6 +16,7 @@ import {
   DELETE_ANSWERS_OF_QUESTION,
   GET_USERS_OF_POSTS,
   ADD_USER_OF_POSTS,
+  EDIT_USER,
 } from "./types";
 
 export const getQuestion = (id) => async (dispatch) => {
@@ -125,14 +126,28 @@ export const getUser = (userId) => async (dispatch) => {
   let res = await server.get(`/users/${userId}`);
   let resAns = await server.get(`/answers`, { params: { userId: userId } });
   let resQue = await server.get(`/questions`, { params: { userId: userId } });
-
+  if (!resAns.data) {
+    resAns.data = [];
+  }
+  if (!resQue.data) {
+    resQue.data = [];
+  }
   dispatch({
     type: GET_USER,
     payload: {
       ...res.data,
-      questionCount: resQue.data.length,
-      answerCount: resAns.data.length,
+      questions: resQue.data,
+      answers: resAns.data,
     },
+  });
+};
+
+export const editUser = (userId, fieldName, fieldValue) => async (dispatch) => {
+  let res = await server.patch(`/users/${userId}`, { [fieldName]: fieldValue });
+
+  dispatch({
+    type: EDIT_USER,
+    payload: { name: fieldName, value: fieldValue },
   });
 };
 
