@@ -17,7 +17,33 @@ import {
   GET_USERS_OF_POSTS,
   ADD_USER_OF_POSTS,
   EDIT_USER,
+  GET_QUESTIONS,
 } from "./types";
+
+export const getQuestions = () => async (dispatch) => {
+  let res = await server.get(`/questions`);
+
+  let questions = await Promise.all(
+    res.data.map(async (question) => {
+      let userData = await server.get(`/users/${question.userId}`);
+      let answerData = await server.get(`/answers`, {
+        params: { questionId: question.id },
+      });
+      let answerNum = 0;
+      if (answerData.data) {
+        answerNum = answerData.data.length;
+      }
+      return { ...question, user: userData.data, answerNum };
+    })
+  );
+
+  console.log(questions);
+
+  dispatch({
+    type: GET_QUESTIONS,
+    payload: questions,
+  });
+};
 
 export const getQuestion = (id) => async (dispatch) => {
   let res = await server.get(`/questions/${id}`);
@@ -205,7 +231,7 @@ export const signIn = (obj) => async (dispatch) => {
 
 export const signOut = () => async (dispatch, getState) => {
   let user = getState().auth.data;
-  await server.patch(`users/${user.id}`, { lastSeen: new Date() });
+  await server.patch(`users/${user.sub}`, { lastSeen: new Date() });
   dispatch({ type: SIGN_OUT });
 };
 

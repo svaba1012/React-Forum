@@ -1,6 +1,7 @@
 import {
   DELETE_QUESTION,
   GET_QUESTION,
+  GET_QUESTIONS,
   POST_QUESTION,
   VOTE_DOWN,
   VOTE_UP,
@@ -8,6 +9,8 @@ import {
 
 export const questionReducer = (question = null, action) => {
   switch (action.type) {
+    case GET_QUESTIONS:
+      return [...action.payload];
     case GET_QUESTION:
       return { ...action.payload };
     case POST_QUESTION:

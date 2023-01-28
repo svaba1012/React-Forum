@@ -8,15 +8,10 @@ function Header() {
       <Link to={"/questions/new"} className="item">
         Post a question
       </Link>
-      {/* <a className="item">Reviews</a>
-      <a className="item">Upcoming Events</a> */}
+      <Link to="/" className="item">
+        Questions
+      </Link>
       <div className="right menu">
-        <div className="item">
-          <div className="ui icon input">
-            <input type="text" placeholder="Search..." />
-            <i className="search link icon"></i>
-          </div>
-        </div>
         <GoogleSignIn />
       </div>
     </div>

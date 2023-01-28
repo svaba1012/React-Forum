@@ -1,5 +1,6 @@
 export const SIGN_IN = "SIGN_IN";
 export const SIGN_OUT = "SIGN_OUT";
+export const GET_QUESTIONS = "GET_QUESTIONS";
 export const GET_QUESTION = "GET_QUESTION";
 export const POST_QUESTION = "POST_QUESTION";
 export const EDIT_QUESTION = "EDIT_QUESTION";

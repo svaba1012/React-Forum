@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import PostBox from "../reusables/PostBox";
@@ -26,6 +26,7 @@ function QuestionPage(props) {
     func();
   }, []);
   let scroolRef = useRef();
+  let [editing, setEditing] = useState(false);
 
   if (!props.question.title) {
     return;
@@ -53,27 +54,33 @@ function QuestionPage(props) {
               key={id}
               id={id}
               onDelete={() => props.deleteAnswer(answer.id, id)}
+              afterEdit={() => setEditing(true)}
+              afterEditCancel={() => setEditing(false)}
             />
           );
         })}
       </div>
-      <div className="ui segment">
-        <h1>Answer this question</h1>
-        <hr />
-        <PostForm
-          titleLabel={"Answer title"}
-          contentLabel={"Answer description"}
-          contentPlaceholder={"Describe in details your answer..."}
-          titlePlaceholder={"Title of your answer..."}
-          previewLabel={"Answer Preview"}
-          submitText={"Post Answer"}
-          onSubmit={(answer) => {
-            props.postAnswer(answer);
-            props.addUserOfPosts();
-            scroolRef.current.scrollIntoView();
-          }}
-        />
-      </div>
+      {editing ? (
+        ""
+      ) : (
+        <div className="ui segment">
+          <h1>Answer this question</h1>
+          <hr />
+          <PostForm
+            titleLabel={"Answer title"}
+            contentLabel={"Answer description"}
+            contentPlaceholder={"Describe in details your answer..."}
+            titlePlaceholder={"Title of your answer..."}
+            previewLabel={"Answer Preview"}
+            submitText={"Post Answer"}
+            onSubmit={(answer) => {
+              props.postAnswer(answer);
+              props.addUserOfPosts();
+              scroolRef.current.scrollIntoView();
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

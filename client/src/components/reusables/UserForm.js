@@ -6,7 +6,7 @@ import "./UserForm.css";
 const renderInput = (formProps) => {
   if (formProps.inputType === "input") {
     return (
-      <div className="ui labeled action input" style={{ width: "50%" }}>
+      <div className="ui labeled action input" style={{ width: "60%" }}>
         <div className="ui label" style={{ width: "40px" }}>
           {formProps.label}
         </div>

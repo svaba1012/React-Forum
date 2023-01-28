@@ -15,9 +15,8 @@ function PostBox({
   auth,
   user,
   onDelete,
-  deleteAnswer,
-  deleteQuestion,
-  deleteAnswersOfQuestion,
+  afterEdit,
+  afterEditCancel,
 }) {
   const [edit, setEdit] = useState(false);
   const navigate = useNavigate();
@@ -29,7 +28,13 @@ function PostBox({
     }
     return (
       <div className="ui segment">
-        <div onClick={() => setEdit(false)} className="edit-answer-x-mark">
+        <div
+          onClick={() => {
+            setEdit(false);
+            afterEditCancel();
+          }}
+          className="edit-answer-x-mark"
+        >
           <i className="fa-regular fa-circle-xmark"></i>
         </div>
         <AnswerEdit
@@ -51,7 +56,14 @@ function PostBox({
     const onEdit =
       id < 0
         ? () => navigate(`/questions/edit/${postData.id}`)
-        : () => setEdit(true);
+        : () => {
+            setEdit(true);
+            afterEdit();
+          };
+    if (edit) {
+      return;
+    }
+
     return (
       <div>
         <button className="ui button primary" onClick={onEdit}>
